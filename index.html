@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enio & Davi </title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --accent: #ec4899;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light);
+            overflow-x: hidden;
+            color: var(--dark);
+        }
+
+        /* Animações */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Background animado */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(245, 158, 11, 0.3);
+            border-radius: 50%;
+            bottom: -200px;
+            right: -200px;
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            background: rgba(236, 72, 153, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            color: white;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: slideIn 1s ease-out;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: slideIn 1.2s ease-out;
+        }
+
+        /* Cards dos candidatos */
+        .candidates-section {
+            padding: 40px 0;
+        }
+
+        .candidates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .candidate-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 1s ease-out;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .candidate-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-1);
+        }
+
+        .candidate-card.vice::before {
+            background: var(--gradient-2);
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .candidate-card.vice .avatar {
+            background: var(--gradient-2);
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+        }
+
+        .avatar::after {
+            content: '👑';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .candidate-card.vice .avatar::after {
+            content: '🤝';
+        }
+
+        .role {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .candidate-card.vice .role {
+            background: var(--gradient-2);
+        }
+
+        .candidate-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .candidate-desc {
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* Seção de Download */
+        .download-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 1.4s ease-out;
+        }
+
+        .download-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(99, 102, 241, 0.03) 10px,
+                rgba(99, 102, 241, 0.03) 20px
+            );
+            animation: rotate 20s linear infinite;
+        }
+
+        .download-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .download-desc {
+            color: #64748b;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--gradient-1);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        .btn-download::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-download:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .file-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+            display: inline-block;
+        }
+
+        .file-info-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-path {
+            font-family: 'Courier New', monospace;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        /* Propostas */
+        .proposals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .proposal-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .proposal-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .proposal-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .proposal-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .proposal-text {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .hearts {
+            color: #ec4899;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .candidates-grid { grid-template-columns: 1fr; gap: 30px; }
+            .candidate-card { padding: 30px 20px; }
+            .download-section { padding: 40px 20px; }
+            .btn-download { padding: 15px 30px; font-size: 1rem; }
+        }
+
+        /* Confetti effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: fall linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="badge">✨ Campanha 2026</div>
+            <h1>Enio & Davi</h1>
+            <p class="subtitle">Juntos pela transformação! Liderança, união e compromisso com a nossa turma. Baixe nossas propostas e conheça nosso projeto!</p>
+        </header>
+
+        <section class="candidates-section">
+            <div class="candidates-grid">
+                <div class="candidate-card">
+                    <div class="avatar">E</div>
+                    <div class="role">Líder</div>
+                    <h3 class="candidate-name">Enio</h3>
+                    <p class="candidate-desc">Liderança visionária, comprometido com a inovação e o bem-estar de todos. Pronto para ouvir e transformar ideias em ação!</p>
+                </div>
+
+                <div class="candidate-card vice">
+                    <div class="avatar">D</div>
+                    <div class="role">Vice-Líder</div>
+                    <h3 class="candidate-name">Davi</h3>
+                    <p class="candidate-desc">Apoio dedicado, criatividade em ação e parceria inseparável. Juntos somos mais fortes para construir um ambiente melhor!</p>
+                </div>
+            </div>
+
+            <div class="proposals">
+                <div class="proposal-card">
+                    <div class="proposal-icon">🎯</div>
+                    <div class="proposal-title">Metas Claras</div>
+                    <div class="proposal-text">Propostas objetivas e alcançáveis para nosso período</div>
+                </div>
+                <div class="proposal-card">
+                    <div class="proposal-icon">🤝</div>
+                    <div class="proposal-title">Trabalho em Equipe</div>
+                    <div class="proposal-text">Diálogo constante com todos os alunos</div>
+                </div>
+                <div class="proposal-card">
+                    <div class="proposal-icon">💡</div>
+                    <div class="proposal-title">Inovação</div>
+                    <div class="proposal-text">Novas ideias para melhorar nosso dia a dia</div>
+                </div>
+                <div class="proposal-card">
+                    <div class="proposal-icon">❤️</div>
+                    <div class="proposal-title">Compromisso</div>
+                    <div class="proposal-text">Dedicação total à nossa turma</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="download-section">
+            <div class="download-content">
+                <div class="download-icon">📊</div>
+                <h2>Baixe Nossas Propostas</h2>
+                <p class="download-desc">
+                    Clique no botão abaixo para fazer o download completo das nossas propostas de campanha. 
+                    Apresentação profissional com todas as ideias e projetos para nossa gestão!
+                </p>
+                
+                <button class="btn-download" onclick="downloadSlide()">
+                    <span>⬇️</span>
+                    <span>BAIXAR SLIDE DE PROPOSTAS</span>
+                </button>
+
+            
+            </div>
+        </section>
+
+        <footer>
+            <p>Enio & Davi <span class="hearts">❤️</span> 2026</p>
+            <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 10px;">Vote com o coração, escolha com a razão!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Efeito de confete ao clicar no download
+        function createConfetti() {
+            const colors = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.opacity = Math.random();
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function downloadSlide() {
+            createConfetti();
+            
+            // Cria um link temporário para download
+            const link = document.createElement('a');
+            link.href = 'propostas.pptx';
+            link.download = 'Enio_Davi_Propostas_Lideranca.pptx';
+            
+            // Tenta fazer o download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Feedback visual
+            const btn = document.querySelector('.btn-download');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>✅</span><span>DOWNLOAD INICIADO!</span>';
+            btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 3000);
+        }
+
+        // Animação suave ao scroll
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.candidate-card, .proposal-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Efeito de digitação no título (opcional, elegante)
+        document.addEventListener('DOMContentLoaded', () => {
+            const title = document.querySelector('h1');
+            title.style.opacity = '0';
+            setTimeout(() => {
+                title.style.transition = 'opacity 1s ease';
+                title.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
